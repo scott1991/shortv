@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import ShortsContainer from "./ShortsContainer.js";
-import './Main.css'
+import './Main.css';
+
+
 const Main = () => {
+  const [activeList, setActiveList] = useState('following');
+  const [scrollPositions, setScrollPositions] = useState({ following: 0, forYou: 0 });
+
   const following = [
     {
       "title": "Audi_A4_S4",
@@ -38,18 +43,31 @@ const Main = () => {
     }
   ];
 
-  const [activeList, setActiveList] = useState('following'); 
+  const handleScrollImpl = (listName, scrollPosition) => {
+    setScrollPositions((prevScrollPositions) => ({
+      ...prevScrollPositions,
+      [listName]: scrollPosition
+    }))
+  }
+
+
   return (
     <div className="main">
       <div className="button-container">
         <span className="tab-button" onClick={() => setActiveList('following')}>Following</span>
         <span className="tab-button" onClick={() => setActiveList('forYou')}>For You</span>
       </div>
-      {activeList === 'following' ? (
-        <ShortsContainer shorts={following} />
-      ) : (
-        <ShortsContainer shorts={forYou} />
-      )}
+
+      {activeList === 'following' &&
+        <ShortsContainer handleScroll={(scrollPosition) => handleScrollImpl('following', scrollPosition)}
+          shorts={following}
+          scrollPosition={scrollPositions.following}
+        />}
+      {activeList === 'forYou' &&
+        <ShortsContainer handleScroll={(scrollPosition) => handleScrollImpl('forYou', scrollPosition)}
+          shorts={forYou}
+          scrollPosition={scrollPositions.forYou}
+        />}
     </div>
   );
 }
