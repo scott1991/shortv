@@ -8,7 +8,7 @@
 
 .short {
   position: relative;
-  scroll-snap-align: start;
+  scroll-snap-align: end;
   height: 100svh;
   display: flex;
   flex-direction: column;
