@@ -56,7 +56,6 @@ const Main = () => {
       ...prevProgress,
       [listName]: currentTime
     }))
-    console.log(porgress);
   };
 
   return (

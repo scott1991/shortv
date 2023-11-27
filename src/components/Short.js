@@ -1,6 +1,6 @@
 import './Short.css'
 import { useEffect, useRef, useState } from 'react';
-
+import Hls from 'hls.js';
 
 const Short = ({ title, cover, play_url, handleProgress, playProgress }) => {
 
@@ -9,18 +9,36 @@ const Short = ({ title, cover, play_url, handleProgress, playProgress }) => {
 
   const videoRef = useRef(null);
 
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.currentTime = playProgress;
-    }
-  }, []);
-
   const onProgress = () => {
-    if (videoRef.current){
-      console.log(videoRef.current.currentTime);
+    if (videoRef.current) {
       handleProgress(videoRef.current.currentTime);
     }
   }
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(play_url);
+        hls.attachMedia(videoRef.current);
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+          if (isPlaying) {
+            videoRef.current.play();
+          }
+        });
+      } else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl')) {
+        videoRef.current.src = play_url;
+        videoRef.current.addEventListener('loadedmetadata', function () {
+          if (isPlaying) {
+            videoRef.current.play();
+          }
+        });
+      }
+
+      videoRef.current.currentTime = playProgress; // 恢復播放進度
+    }
+  }, [play_url, isPlaying]);
+
 
 
   useEffect(() => {
@@ -50,17 +68,17 @@ const Short = ({ title, cover, play_url, handleProgress, playProgress }) => {
       <img src={cover} alt={title} className="short-cover" />
 
       {isPlaying && (
-        <video className="short-video"
+        <video
           ref={videoRef}
+          className="short-video"
           playsInline webkit-playsinline="true"
           src={play_url} controls autoPlay muted loop
+          onTimeUpdate={onProgress}
           type="application/x-mpegURL"
-          onProgress={onProgress}
         />
       )}
 
       <p className="short-title">{title}</p>
-
     </div>
   );
 };

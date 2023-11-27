@@ -14,6 +14,7 @@ const ShortsContainer = ({ shorts, handleScroll, scrollPosition, handleProgress,
   const onScroll = () => {
     if (containerRef.current) {
       handleScroll(containerRef.current.scrollTop);
+      handleProgress(0); // when scroll reset progress
     }
   };
 
