@@ -16,3 +16,9 @@
   justify-content: center;
   overflow-x: hidden;
 }
+
+.short-video, .short-cover {
+  position: absolute;
+  min-height: 100svh;
+  object-fit: cover;
+}

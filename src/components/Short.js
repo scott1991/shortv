@@ -34,18 +34,14 @@ const Short = ({ title, cover, play_url }) => {
   }, []);
 
   return (
-    <div ref={shortRef} className='short'
-      
-    >
-      {isPlaying ? (
-        <video
+    <div ref={shortRef} className='short'>
+      <img src={cover} alt={title} className="short-cover" />
+      {isPlaying && (
+        <video className="short-video"
           playsInline webkit-playsinline="true"
           src={play_url} controls autoPlay muted loop
-          style={{ minHeight: '100svh', objectFit: 'cover' }}
           type="application/x-mpegURL"
         />
-      ) : (
-        <img src={cover} alt={title} style={{ minHeight: '100svh', objectFit: 'cover' }} />
       )}
       <p className="short-title">{title}</p>
     </div>
