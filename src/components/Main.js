@@ -6,6 +6,7 @@ import './Main.css';
 const Main = () => {
   const [activeList, setActiveList] = useState('following');
   const [scrollPositions, setScrollPositions] = useState({ following: 0, forYou: 0 });
+  const [porgress, setPorgress] = useState({ following: 0, forYou: 0 })
 
   const following = [
     {
@@ -50,6 +51,13 @@ const Main = () => {
     }))
   }
 
+  const handleProgressImpl = (listName, currentTime) => {
+    setPorgress((prevProgress) => ({
+      ...prevProgress,
+      [listName]: currentTime
+    }))
+    console.log(porgress);
+  };
 
   return (
     <div className="main">
@@ -59,14 +67,21 @@ const Main = () => {
       </div>
 
       {activeList === 'following' &&
-        <ShortsContainer handleScroll={(scrollPosition) => handleScrollImpl('following', scrollPosition)}
-          shorts={following}
+        <ShortsContainer
+          handleScroll={(scrollPosition) => handleScrollImpl('following', scrollPosition)}
           scrollPosition={scrollPositions.following}
+          handleProgress={(currentTime) => handleProgressImpl('following', currentTime)}
+          playProgress={porgress.following}
+          shorts={following}
         />}
       {activeList === 'forYou' &&
-        <ShortsContainer handleScroll={(scrollPosition) => handleScrollImpl('forYou', scrollPosition)}
-          shorts={forYou}
+        <ShortsContainer
+          handleScroll={(scrollPosition) => handleScrollImpl('forYou', scrollPosition)}
           scrollPosition={scrollPositions.forYou}
+          handleProgress={(currentTime) => handleProgressImpl('forYou', currentTime)}
+          playProgress={porgress.forYou}
+          shorts={forYou}
+
         />}
     </div>
   );

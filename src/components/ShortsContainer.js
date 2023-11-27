@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import Short from './Short.js';
 import './ShortsContainer.css';
 
-const ShortsContainer = ({ shorts, handleScroll, scrollPosition }) => {
+const ShortsContainer = ({ shorts, handleScroll, scrollPosition, handleProgress, playProgress }) => {
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const ShortsContainer = ({ shorts, handleScroll, scrollPosition }) => {
   return (
     <div ref={containerRef} className="prevent-select container" onScroll={onScroll}>
       {shorts.map((short, index) => (
-        <Short key={index} {...short} />
+        <Short key={index} {...short} handleProgress={handleProgress} playProgress={playProgress}/>
       ))}
     </div>
   );
