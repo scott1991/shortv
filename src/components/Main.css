@@ -1,0 +1,22 @@
+.main {
+  position: relative; 
+}
+
+.button-container {
+  position: absolute;
+  top: 3vh;
+  left: 0;
+  z-index: 10; /* top */
+  display: flex;
+  width: 100%;
+  justify-content: space-around; /* 按鈕左右平均分佈 */
+}
+
+.tab-button {
+  /* background: none; */
+  /* border: none; */
+  cursor: pointer;
+  color: white; 
+  text-shadow: 1px 1px 3px black; 
+  font-size: 1.3em;
+}

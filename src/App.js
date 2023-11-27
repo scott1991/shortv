@@ -1,9 +1,9 @@
 import './App.css';
-import ShortsContainer from './components/ShortsContainer';
+import Main from './components/Main.js';
 
 function App() {
   return (
-    <ShortsContainer />
+    <Main />
   );
 }
 

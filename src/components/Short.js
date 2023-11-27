@@ -12,8 +12,10 @@ const Short = ({ title, cover }) => {
   }, []);
 
   return (
-    <div ref={imgRef} style={{ height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      <img src={cover} alt={title} style={{ minHeight: '100%', objectFit: 'cover' }} />
+    <div ref={imgRef}
+      className='short'
+    >
+      <img src={cover} alt={title} style={{ minHeight: '100svh', objectFit: 'cover' }} />
       <p className="short-title">{title}</p>
     </div>
   );

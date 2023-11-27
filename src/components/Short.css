@@ -1,7 +1,18 @@
 .short-title {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  text-shadow: 0px 0px 8px gray;
-  color: white;
+  position: absolute ;
+  bottom: 1vh;
+  right: calc(50vw - 20vh); /*middle right*/
+  text-shadow: 1px 1px 5px black;
+  color: whitesmoke;
+}
+
+.short {
+  position: relative;
+  scroll-snap-align: start;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
 }
