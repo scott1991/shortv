@@ -8,3 +8,12 @@
   scroll-snap-type: y mandatory;
   height: 100svh;
 }
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+.container {
+  scrollbar-width: none;
+  -ms-overflow-style: none;  /* IE */
+}
