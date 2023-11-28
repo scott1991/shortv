@@ -2,6 +2,9 @@
 
 ShortV App 是一個用於播放短影片的網頁App，支援 HLS 格式的影片播放。包含三個主要component：`Main`, `ShortsContainer`, 和 `Short`
 
+## Usage
+`npm i && npm start`
+
 ## 主要Component
 
 ### `Main`
