@@ -51,7 +51,7 @@ const Short = ({ title, cover, play_url, handleProgress, playProgress }) => {
           setIsPlaying(false);
         }
       });
-    }, { threshold: 0.9 }); // 至少有90%的 Short 可見時
+    }, { threshold: 0.95 }); // 至少有95%的 Short 可見時
 
     if (currentElement) {
       observer.observe(currentElement);
