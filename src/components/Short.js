@@ -42,6 +42,7 @@ const Short = ({ title, cover, play_url, handleProgress, playProgress }) => {
 
 
   useEffect(() => {
+    const currentElement = shortRef.current;
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -52,13 +53,13 @@ const Short = ({ title, cover, play_url, handleProgress, playProgress }) => {
       });
     }, { threshold: 0.9 }); // 至少有90%的 Short 可見時
 
-    if (shortRef.current) {
-      observer.observe(shortRef.current);
+    if (currentElement) {
+      observer.observe(currentElement);
     }
 
     return () => {
-      if (shortRef.current) {
-        observer.unobserve(shortRef.current);
+      if (currentElement) {
+        observer.unobserve(currentElement);
       }
     };
   }, []);
