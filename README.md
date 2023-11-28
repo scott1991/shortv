@@ -1,70 +1,31 @@
-# Getting Started with Create React App
+# ShortV App 說明文件
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ShortV App 是一個用於播放短影片的網頁App，支援 HLS 格式的影片播放。包含三個主要component：`Main`, `ShortsContainer`, 和 `Short`
 
-## Available Scripts
+## 主要Component
 
-In the project directory, you can run:
+### `Main`
 
-### `npm start`
+- 利用 React `useState` 和 `useEffect` 來從server取得兩個影片列表`following` 和 `forYou`
+- 提供 Tab 切換功能，可以在 "Following" 和 "For You" 之間切換。
+- 記錄使用者在每個列表中的滾動位置和影片播放進度。
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### `ShortsContainer`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- 用於顯示 `Short` Component 的列表。
+- 處理onScroll事件並將滾動位置和影片播放進度傳遞給 `Main` 
+- 使用 `useEffect` 來設定初始滾動位置。
 
-### `npm test`
+### `Short`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- 顯示單個圖片/影片。
+- 使用 `Intersection Observer API` 來檢測當前影片是否在可視範圍內，並根據此來控制影片的播放。
+- 使用 `hls.js` 來處理 `.m3u8` 影片的播放，相容不原生支援 HLS 的瀏覽器。// 以前曾經桌面瀏覽器也原生支援
 
-### `npm run build`
+## CSS
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- 主要利用 `scroll-snap-type: y mandatory;` `scroll-snap-align: end;` 來達成滑動停駐的效果
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 設定文件
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- `setting.js`：Server ip / port
