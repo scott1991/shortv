@@ -1,6 +1,7 @@
 import './Short.css'
 import { useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js';
+import PropTypes from 'prop-types';
 
 const Short = ({ title, cover, play_url, progressRef, listName }) => {
 
@@ -110,6 +111,18 @@ const Short = ({ title, cover, play_url, progressRef, listName }) => {
       <p className="short-title">{title}</p>
     </div>
   );
+};
+
+
+Short.propTypes = {
+  title: PropTypes.string.isRequired,
+  cover: PropTypes.string.isRequired,
+  play_url: PropTypes.string.isRequired,
+  progressRef:PropTypes.shape({
+    following: PropTypes.number,
+    forYou: PropTypes.number
+  }).isRequired,
+  listName: PropTypes.string  
 };
 
 export default Short;
