@@ -8,10 +8,20 @@ const ShortsContainer = ({ listName, shorts, scrollPositionsRef, progressRef }) 
   const debounceTimerRef = useRef(null);
 
   useEffect(() => {
+    let timeoutId;
     if (containerRef.current) {
       containerRef.current.scrollTop = scrollPositionsRef.current[listName];
-      firstScrollRef.current = false ;
+  
+      timeoutId = setTimeout(() => {
+        firstScrollRef.current = false;
+      }, 0); // next event cycle
     }
+  
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, []);
 
   const onScroll = () => {
@@ -19,10 +29,9 @@ const ShortsContainer = ({ listName, shorts, scrollPositionsRef, progressRef }) 
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current);
       }
-
+      progressRef.current[listName] = 0; // reset progress
       debounceTimerRef.current = setTimeout(() => {
         scrollPositionsRef.current[listName] = containerRef.current.scrollTop;
-        progressRef.current[listName] = 0; // reset progress
       }, 300);
     }
   };
