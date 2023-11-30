@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import ShortsContainer from "./ShortsContainer.js";
 import useFetchData from '../useFetchData.js';
 import './Main.css';
