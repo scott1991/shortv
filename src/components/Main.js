@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import ShortsContainer from "./ShortsContainer.js";
 import setting from '../setting.js';
 import './Main.css';
@@ -7,8 +7,10 @@ const { setting_host: host, setting_port: port } = setting;
 
 const Main = () => {
   const [activeList, setActiveList] = useState('following');
-  const [scrollPositions, setScrollPositions] = useState({ following: 0, forYou: 0 });
-  const [porgress, setPorgress] = useState({ following: 0, forYou: 0 })
+  const scrollPositionsRef = useRef({ following: 0, forYou: 0 });
+  const progressRef = useRef({ following: 0, forYou: 0 });
+
+
 
   const [lists, setLists] = useState({ following: [], forYou: [] });
 
@@ -21,7 +23,7 @@ const Main = () => {
       })))
       .catch(error => console.error(error))
 
-      fetch(`http://${host}:${port}/for_you_list`)
+    fetch(`http://${host}:${port}/for_you_list`)
       .then(response => response.json())
       .then(data => setLists(prevLists => ({
         ...prevLists,
@@ -30,21 +32,6 @@ const Main = () => {
       .catch(error => console.error(error))
   }, []);
 
-
-
-  const handleScrollImpl = (listName, scrollPosition) => {
-    setScrollPositions((prevScrollPositions) => ({
-      ...prevScrollPositions,
-      [listName]: scrollPosition
-    }))
-  }
-
-  const handleProgressImpl = (listName, currentTime) => {
-    setPorgress((prevProgress) => ({
-      ...prevProgress,
-      [listName]: currentTime
-    }))
-  };
 
   return (
     <div className="main">
@@ -57,20 +44,17 @@ const Main = () => {
 
       {activeList === 'following' && lists.following.length > 0 &&
         <ShortsContainer
-          handleScroll={(scrollPosition) => handleScrollImpl('following', scrollPosition)}
-          scrollPosition={scrollPositions.following}
-          handleProgress={(currentTime) => handleProgressImpl('following', currentTime)}
-          playProgress={porgress.following}
+          listName='following'
+          scrollPositionsRef={scrollPositionsRef}
+          progressRef={progressRef}
           shorts={lists.following}
         />}
       {activeList === 'forYou' && lists.forYou.length > 0 &&
         <ShortsContainer
-          handleScroll={(scrollPosition) => handleScrollImpl('forYou', scrollPosition)}
-          scrollPosition={scrollPositions.forYou}
-          handleProgress={(currentTime) => handleProgressImpl('forYou', currentTime)}
-          playProgress={porgress.forYou}
+          listName='forYou'
+          scrollPositionsRef={scrollPositionsRef}
+          progressRef={progressRef}
           shorts={lists.forYou}
-
         />}
     </div>
   );

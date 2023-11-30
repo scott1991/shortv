@@ -2,7 +2,7 @@ import './Short.css'
 import { useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js';
 
-const Short = ({ title, cover, play_url, handleProgress, playProgress }) => {
+const Short = ({ title, cover, play_url, progressRef, listName }) => {
 
   const shortRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -11,33 +11,52 @@ const Short = ({ title, cover, play_url, handleProgress, playProgress }) => {
 
   const onProgress = () => {
     if (videoRef.current) {
-      handleProgress(videoRef.current.currentTime);
+      progressRef.current[listName] = videoRef.current.currentTime;
     }
   }
 
   useEffect(() => {
+    let playTimeout;
+
+    const setupHls = () => {
+      const hls = new Hls();
+      hls.loadSource(play_url);
+      hls.attachMedia(videoRef.current);
+      hls.on(Hls.Events.MANIFEST_PARSED, playVideo);
+    };
+
+    const playVideo = () => {
+      if (videoRef.current && isPlaying) {
+        // 延遲播放
+        playTimeout = setTimeout(() => {
+          videoRef.current.play().catch(error => {
+            console.warn("error playing", error);
+          });
+        }, 500);
+      }
+    };
+
     if (videoRef.current) {
       if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(play_url);
-        hls.attachMedia(videoRef.current);
-        hls.on(Hls.Events.MANIFEST_PARSED, function () {
-          if (isPlaying) {
-            videoRef.current.play();
-          }
-        });
+        setupHls();
       } else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl')) {
         videoRef.current.src = play_url;
-        videoRef.current.addEventListener('loadedmetadata', function () {
-          if (isPlaying) {
-            videoRef.current.play();
-          }
-        });
+        videoRef.current.addEventListener('loadedmetadata', playVideo);
       }
 
-      videoRef.current.currentTime = playProgress; // 恢復播放進度
+      videoRef.current.currentTime = progressRef.current[listName]; // 恢復播放進度
     }
+
+    return () => {
+      if (playTimeout) {
+        clearTimeout(playTimeout);
+      }
+      if (videoRef.current) {
+        videoRef.current.removeEventListener('loadedmetadata', playVideo);
+      }
+    };
   }, [play_url, isPlaying]);
+
 
 
 
@@ -64,6 +83,15 @@ const Short = ({ title, cover, play_url, handleProgress, playProgress }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(error => {
+        console.warn("error playing", error);
+      });
+    }
+  }, [isPlaying]);
+
+
   return (
     <div ref={shortRef} className='short'>
       <img src={cover} alt={title} className="short-cover" />
@@ -73,7 +101,7 @@ const Short = ({ title, cover, play_url, handleProgress, playProgress }) => {
           ref={videoRef}
           className="short-video"
           playsInline webkit-playsinline="true"
-          src={play_url} controls autoPlay muted loop
+          src={play_url} controls muted loop
           onTimeUpdate={onProgress}
           type="application/x-mpegURL"
         />
