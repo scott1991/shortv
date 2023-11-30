@@ -17,7 +17,7 @@ const ShortsContainer = ({ listName, shorts, scrollPositionsRef, progressRef }) 
   const onScroll = () => {
     if (containerRef.current && !firstScroll) {
       scrollPositionsRef.current[listName] = containerRef.current.scrollTop;
-      // handleProgress(0); // when scroll reset progress
+      progressRef.current[listName] = 0; // reset progress
     }
   };
 
