@@ -17,42 +17,42 @@ const Short = ({ title, cover, play_url, progressRef, listName }) => {
 
   useEffect(() => {
     let playTimeout;
-
+    const currentVideo = videoRef.current;
     const setupHls = () => {
       const hls = new Hls();
       hls.loadSource(play_url);
-      hls.attachMedia(videoRef.current);
+      hls.attachMedia(currentVideo);
       hls.on(Hls.Events.MANIFEST_PARSED, playVideo);
     };
 
     const playVideo = () => {
-      if (videoRef.current && isPlaying) {
+      if (currentVideo && isPlaying) {
         // 延遲播放
         playTimeout = setTimeout(() => {
-          videoRef.current.play().catch(error => {
+          currentVideo.play().catch(error => {
             console.warn("error playing", error);
           });
         }, 400);
       }
     };
 
-    if (videoRef.current) {
+    if (currentVideo) {
       if (Hls.isSupported()) {
         setupHls();
-      } else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl')) {
-        videoRef.current.src = play_url;
-        videoRef.current.addEventListener('loadedmetadata', playVideo);
+      } else if (currentVideo.canPlayType('application/vnd.apple.mpegurl')) {
+        currentVideo.src = play_url;
+        currentVideo.addEventListener('loadedmetadata', playVideo);
       }
 
-      videoRef.current.currentTime = progressRef.current[listName]; // 恢復播放進度
+      currentVideo.currentTime = progressRef.current[listName]; // 恢復播放進度
     }
 
     return () => {
       if (playTimeout) {
         clearTimeout(playTimeout);
       }
-      if (videoRef.current) {
-        videoRef.current.removeEventListener('loadedmetadata', playVideo);
+      if (currentVideo) {
+        currentVideo.removeEventListener('loadedmetadata', playVideo);
       }
     };
   }, [play_url, isPlaying]);
