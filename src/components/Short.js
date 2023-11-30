@@ -32,7 +32,7 @@ const Short = ({ title, cover, play_url, progressRef, listName }) => {
           videoRef.current.play().catch(error => {
             console.warn("error playing", error);
           });
-        }, 500);
+        }, 400);
       }
     };
 

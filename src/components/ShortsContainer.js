@@ -4,8 +4,8 @@ import './ShortsContainer.css';
 
 const ShortsContainer = ({ listName, shorts, scrollPositionsRef, progressRef }) => {
   const containerRef = useRef(null);
-
   const [firstScroll, setFirstScroll] = useState(true); // prevent first scroll reset time
+  const debounceTimerRef = useRef(null);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -16,8 +16,14 @@ const ShortsContainer = ({ listName, shorts, scrollPositionsRef, progressRef }) 
 
   const onScroll = () => {
     if (containerRef.current && !firstScroll) {
-      scrollPositionsRef.current[listName] = containerRef.current.scrollTop;
-      progressRef.current[listName] = 0; // reset progress
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+
+      debounceTimerRef.current = setTimeout(() => {
+        scrollPositionsRef.current[listName] = containerRef.current.scrollTop;
+        progressRef.current[listName] = 0; // reset progress
+      }, 300);
     }
   };
 
