@@ -28,13 +28,13 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: ls
+    - run: ls /node_modules
     
   run2:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - run: ls /node_modules
+      - run: ls
       - run: df -h
     
   
